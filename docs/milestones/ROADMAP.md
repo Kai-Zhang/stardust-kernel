@@ -28,7 +28,7 @@ This roadmap is formatted for humans and coding agents. Keep milestone state and
 ### M1
 
 - id: `M1-boot-to-rust`
-- status: `planned`
+- status: `active`
 - objective: Boot Rust kernel under QEMU via UEFI and print early boot diagnostics.
 - deliverables:
   - UEFI boot path and handoff structures
