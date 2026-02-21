@@ -59,6 +59,7 @@ Note: once `cargo xtask` is implemented, prefer unified task entrypoints over ad
   - Layer C pass evidence (reviewer baseline)
   - Layer D pass evidence (GitHub Actions run URL)
 - No pass URL, no milestone completion.
+- After release gate passes, update `docs/milestones/ROADMAP.md` milestone status to `done` and push that status update to `main`.
 - `release/*` branches are treated as frozen snapshots.
   - Allowed changes: `fix(release): ...` and `docs(release): ...` only.
   - Every release branch fix must re-run Layer D and attach the new passing run URL.
