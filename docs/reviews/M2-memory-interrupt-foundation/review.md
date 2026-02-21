@@ -68,8 +68,8 @@ Validation commands and outcomes (refreshed 2026-02-21):
   - URL: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253479921
   - Commit: `59904cb05fe4777d9a0f96fe96d140679661a851`
 - Release branch PASS (`release/m2-memory-interrupt-foundation`):
-  - URL: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253500342
-  - Commit: `59904cb05fe4777d9a0f96fe96d140679661a851`
+  - URL: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253517088
+  - Commit: `3dd0a92c00f196b01b4a0d67e9a7e0ea4670dbef`
 
 ## Recommendation
 
