@@ -4,6 +4,7 @@
 extern crate alloc;
 
 use stardust_kernel::interrupts;
+use stardust_kernel::userspace;
 use uefi::boot::{self, MemoryType};
 use uefi::mem::memory_map::MemoryMap;
 use uefi::prelude::*;
@@ -72,6 +73,14 @@ fn efi_main() -> Status {
     println!(
         "m2b:timer_ticks hz={} vector={} ticks={} acks={}",
         snap.configured_hz, snap.timer_irq_vector, snap.total_ticks, snap.ack_count
+    );
+
+    let user_report = userspace::run_m3_demo_payload();
+    println!(
+        "m3:demo ring0_to_ring3=true returned_to_ring0={} bytes_written={} exit_code={}",
+        user_report.final_ring == userspace::CpuRing::Ring0,
+        user_report.bytes_written,
+        user_report.exit_code
     );
 
     Status::SUCCESS

@@ -107,44 +107,73 @@ pub fn bootstrap_periodic_timer(hz: u32, vector: u8) -> Result<(), TimerIntegrat
 mod tests {
     use super::*;
 
+    static TEST_LOCK: AtomicBool = AtomicBool::new(false);
+
+    fn with_test_lock<F: FnOnce()>(f: F) {
+        while TEST_LOCK
+            .compare_exchange(false, true, Ordering::SeqCst, Ordering::SeqCst)
+            .is_err()
+        {
+            core::hint::spin_loop();
+        }
+        f();
+        TEST_LOCK.store(false, Ordering::SeqCst);
+    }
+
+    fn reset_state() {
+        FOUNDATION_READY.store(false, Ordering::SeqCst);
+        TIMER_TICKS.store(0, Ordering::SeqCst);
+        TIMER_ACKS.store(0, Ordering::SeqCst);
+        TIMER_HZ.store(0, Ordering::SeqCst);
+        TIMER_IRQ_VECTOR.store(0, Ordering::SeqCst);
+    }
+
     #[test]
     fn timer_requires_foundation_and_valid_frequency() {
-        FOUNDATION_READY.store(false, Ordering::SeqCst);
-        assert_eq!(
-            configure_periodic_timer(TimerSourceConfig { hz: 100 }),
-            Err(TimerIntegrationError::FoundationNotReady)
-        );
+        with_test_lock(|| {
+            reset_state();
+            assert_eq!(
+                configure_periodic_timer(TimerSourceConfig { hz: 100 }),
+                Err(TimerIntegrationError::FoundationNotReady)
+            );
 
-        let _ = init_foundation();
-        assert_eq!(
-            configure_periodic_timer(TimerSourceConfig { hz: 0 }),
-            Err(TimerIntegrationError::InvalidFrequency)
-        );
+            let _ = init_foundation();
+            assert_eq!(
+                configure_periodic_timer(TimerSourceConfig { hz: 0 }),
+                Err(TimerIntegrationError::InvalidFrequency)
+            );
+        });
     }
 
     #[test]
     fn routed_timer_irq_produces_tick_and_ack_progress() {
-        let _ = init_foundation();
-        let start = snapshot();
+        with_test_lock(|| {
+            reset_state();
+            let _ = init_foundation();
+            let start = snapshot();
 
-        bootstrap_periodic_timer(100, 32).expect("timer setup must succeed");
-        let _ = handle_timer_irq().expect("timer irq should be routable");
-        let _ = handle_timer_irq().expect("timer irq should be repeatable");
+            bootstrap_periodic_timer(100, 32).expect("timer setup must succeed");
+            let _ = handle_timer_irq().expect("timer irq should be routable");
+            let _ = handle_timer_irq().expect("timer irq should be repeatable");
 
-        let end = snapshot();
-        assert_eq!(end.configured_hz, 100);
-        assert_eq!(end.timer_irq_vector, 32);
-        assert!(end.total_ticks >= start.total_ticks + 2);
-        assert!(end.ack_count >= start.ack_count + 2);
+            let end = snapshot();
+            assert_eq!(end.configured_hz, 100);
+            assert_eq!(end.timer_irq_vector, 32);
+            assert!(end.total_ticks >= start.total_ticks + 2);
+            assert!(end.ack_count >= start.ack_count + 2);
+        });
     }
 
     #[test]
     fn handle_fails_without_irq_routing() {
-        FOUNDATION_READY.store(true, Ordering::SeqCst);
-        TIMER_IRQ_VECTOR.store(0, Ordering::SeqCst);
-        assert_eq!(
-            handle_timer_irq(),
-            Err(TimerIntegrationError::TimerIrqNotRouted)
-        );
+        with_test_lock(|| {
+            reset_state();
+            FOUNDATION_READY.store(true, Ordering::SeqCst);
+            TIMER_IRQ_VECTOR.store(0, Ordering::SeqCst);
+            assert_eq!(
+                handle_timer_irq(),
+                Err(TimerIntegrationError::TimerIrqNotRouted)
+            );
+        });
     }
 }

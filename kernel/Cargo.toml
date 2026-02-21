@@ -16,3 +16,4 @@ bench = false
 
 [dependencies]
 uefi = { version = "0.33", features = ["alloc", "panic_handler", "global_allocator"] }
+stardust-user = { path = "../user" }

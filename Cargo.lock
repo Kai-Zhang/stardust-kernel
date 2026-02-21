@@ -68,6 +68,7 @@ dependencies = [
 name = "stardust-kernel"
 version = "0.1.0"
 dependencies = [
+ "stardust-user",
  "uefi",
 ]
 
