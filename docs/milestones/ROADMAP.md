@@ -63,6 +63,22 @@ A milestone can be marked `done` only when all required evidence is linked in do
   - Kernel handles periodic timer interrupts without faulting
   - Mapping tests pass in-kernel smoke tests
 
+### M2b
+
+- id: `M2b-timer-irq-controller-integration`
+- status: `planned`
+- objective: Complete hardware-level periodic timer IRQ controller integration on top of M2 foundations.
+- deliverables:
+  - Programmable timer source setup and frequency control
+  - IRQ controller routing/acknowledge path for timer interrupts
+  - Observable periodic tick behavior with deterministic counters/logs
+- dependencies:
+  - `M2-memory-interrupt-foundation`
+- acceptance:
+  - Configurable periodic timer ticks are observable in QEMU logs
+  - IRQ acknowledge path is validated for repeated interrupts
+  - No spurious fault during sustained timer interrupt load (smoke scenario)
+
 ### M3
 
 - id: `M3-userspace-and-syscalls-a`
@@ -74,6 +90,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
   - Demo user binary prints and exits cleanly
 - dependencies:
   - `M2-memory-interrupt-foundation`
+  - `M2b-timer-irq-controller-integration`
   - `docs/abi/linux-syscall-subset.md` Phase A contract
 - acceptance:
   - Demo user payload runs via syscall interface in QEMU
