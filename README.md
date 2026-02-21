@@ -1,50 +1,137 @@
-# Teaching Kernel (Rust)
+# Stardust Kernel
 
-A practical teaching/demo kernel workspace focused on building a small x86_64 kernel in pure Rust, booted through UEFI, with a minimal Linux-compatible syscall layer for user programs.
+[![Layer D Release Validation](https://github.com/Kai-Zhang/stardust-kernel/actions/workflows/layer-d.yml/badge.svg)](https://github.com/Kai-Zhang/stardust-kernel/actions/workflows/layer-d.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-nightly-orange)](https://www.rust-lang.org/)
 
-## Project Goals
+A modern, milestone-driven educational kernel in Rust.
 
-- Build a readable, incremental kernel implementation suitable for teaching.
-- Stay in pure Rust for kernel and user-space demo components.
-- Boot on x86_64 with UEFI in QEMU first, then real hardware later.
-- Provide a narrow Linux ABI subset to run simple statically linked demo programs.
-- Keep docs, milestones, and contributor workflows explicit for humans and coding agents.
+Stardust Kernel is built for people who want to learn kernel engineering through **real implementation steps**, not toy snippets. The project emphasizes clear architecture, reproducible workflows, and release-quality checkpoints for every milestone.
 
-## Non-Goals (Initial Phases)
+---
 
-- Full Linux compatibility.
-- Multi-architecture support (x86_64 only at first).
-- Production hardening, advanced scheduling, containers, or networking stack parity.
-- ABI stability guarantees before milestone M4.
+## ✨ Highlights
 
-## Architecture Direction
+- Pure Rust kernel path
+- UEFI boot on x86_64 (QEMU + OVMF first, hardware later)
+- Linux syscall ABI subset strategy
+- Milestone-oriented delivery with acceptance gates
+- Theory + implementation paired documentation
 
-- **Boot path**: UEFI loads kernel image and hands off memory map + boot metadata.
-- **Kernel model**: Monolithic teaching kernel with clear subsystem boundaries.
-- **Target ISA**: `x86_64`.
-- **Execution mode**: Long mode, higher-half kernel (planned).
-- **User ABI**: Documented Linux syscall subset (see `docs/abi/linux-syscall-subset.md`).
-- **Primary dev platform**: Linux host toolchain + QEMU/OVMF.
+---
 
-## Repository Layout
+## 🎯 Goals
 
-- `kernel/`: kernel crate(s) and core subsystems.
-- `user/`: demo user-space components and ABI-facing libraries.
-- `tools/`: host-side build/inspection utilities.
-- `scripts/`: automation entry points (build, run, test).
-- `docs/`: design docs, ABI references, and milestones.
-- `.github/`: repository automation templates/workflows.
+- Build a readable, incremental kernel for learning and demos
+- Reuse proven standards (UEFI, ELF, Linux ABI conventions)
+- Keep development and testing repeatable
+- Ship each milestone as a stable release branch
 
-## Quick Start (Placeholders)
+## 🚫 Non-goals (early phases)
 
-1. Install Rust nightly with `rust-src` and `llvm-tools`.
-2. Install QEMU and OVMF firmware files.
-3. Run workspace checks:
-   - `cargo check --workspace`
-4. Build + run flow will be added in milestone M1:
-   - `scripts/build.sh`
-   - `scripts/run-qemu.sh`
+- Full Linux compatibility
+- Production hardening from day one
+- Multi-architecture support in initial milestones
+- Over-abstracted architecture that harms readability
 
-## Status
+---
 
-This repository is intentionally early-stage. See `docs/milestones/ROADMAP.md` for concrete milestones, acceptance criteria, and sequencing.
+## 🧭 Technical Direction
+
+- **Language**: Rust
+- **Boot model**: UEFI
+- **ISA**: x86_64
+- **Virtualization**: QEMU + OVMF
+- **ABI direction**: Linux syscall subset
+- **Milestone structure**: PRD → Design → Implement → Review
+
+---
+
+## 📁 Repository Layout
+
+```text
+kernel/                 # Kernel crate(s) and runtime path
+user/                   # User-space ABI/demo components
+scripts/                # Build/run/test scripts
+docs/                   # Specs, roadmap, reviews, fundamentals, testing
+  specs/                # PRD + design per milestone
+  reviews/              # Reviewer reports
+  milestones/           # Milestone plan and state
+  fundamentals/         # Milestone theory notes
+.github/workflows/      # CI pipelines (including Layer D)
+```
+
+---
+
+## 🚀 Quick Start (local)
+
+> Prerequisites: Rust nightly, QEMU, OVMF, mtools
+
+```bash
+# Build M1 image
+scripts/build.sh
+
+# Run in QEMU
+scripts/run-qemu.sh
+```
+
+Expected boot markers include:
+
+- `stardust-kernel <version>`
+- `memmap: descriptors=... total_pages=... conventional_pages=...`
+
+---
+
+## ✅ Quality Gates
+
+Testing uses four layers:
+
+- **Layer A**: fast local correctness
+- **Layer B**: local integration/demo smoke
+- **Layer C**: reviewer baseline verification
+- **Layer D**: release validation (Linux x86_64 CI)
+
+Details:
+
+- `docs/testing/test-layers.md`
+- `docs/testing/layer-d-ci.md`
+- `docs/testing/xtask-plan.md`
+
+---
+
+## 🗺️ Milestones & Release Branches
+
+- `main`: active development
+- `release/m{N}-{slug}`: stable milestone snapshots
+
+Roadmap:
+
+- `docs/milestones/ROADMAP.md`
+
+---
+
+## 📚 Learning Path (recommended)
+
+1. `docs/milestones/ROADMAP.md`
+2. `docs/fundamentals/README.md`
+3. `docs/fundamentals/M1-boot-to-rust.md`
+4. `docs/testing/test-layers.md`
+
+This sequence explains both **why** and **how** each milestone works.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome in implementation, testing, review tooling, and docs quality.
+
+Please read first:
+
+- `CONTRIBUTING.md`
+- `AGENTS.md`
+
+---
+
+## 📄 License
+
+MIT. See [`LICENSE`](./LICENSE).
