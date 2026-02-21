@@ -10,6 +10,8 @@ Use these notes to answer two practical questions quickly:
 ## Current Notes
 
 - `docs/fundamentals/M1-boot-to-rust.md`: Step-by-step explanation of the M1 UEFI to Rust execution path in QEMU/OVMF.
+- `docs/fundamentals/M2-memory-interrupt-foundation.md`: Foundation contracts for frames, virtual mapping, and interrupt readiness in M2.
+- `docs/fundamentals/M2b-timer-irq-controller-integration.md`: Timer source setup + IRQ routing/ack integration model for M2b.
 - `docs/fundamentals/milestone-theory-template.md`: Reusable template for future milestone theory notes.
 
 ## Authoring Expectations

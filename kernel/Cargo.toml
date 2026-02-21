@@ -8,5 +8,11 @@ autobins = false
 [lib]
 path = "src/lib.rs"
 
+[[bin]]
+name = "stardust-kernel"
+path = "src/main.rs"
+test = false
+bench = false
+
 [dependencies]
 uefi = { version = "0.33", features = ["alloc", "panic_handler", "global_allocator"] }
