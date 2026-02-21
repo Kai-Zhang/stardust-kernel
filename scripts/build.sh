@@ -21,7 +21,7 @@ mkdir -p "$IMAGE_DIR/EFI/BOOT"
 cp "$EFI_OUT" "$IMAGE_DIR/EFI/BOOT/BOOTX64.EFI"
 
 rm -f "$IMAGE_PATH"
-dd if=/dev/zero of="$IMAGE_PATH" bs=1m count=64 >/dev/null 2>&1
+dd if=/dev/zero of="$IMAGE_PATH" bs=1M count=64 >/dev/null 2>&1
 mformat -i "$IMAGE_PATH" -F ::
 mmd -i "$IMAGE_PATH" ::/EFI ::/EFI/BOOT
 mcopy -i "$IMAGE_PATH" "$IMAGE_DIR/EFI/BOOT/BOOTX64.EFI" ::/EFI/BOOT/BOOTX64.EFI
