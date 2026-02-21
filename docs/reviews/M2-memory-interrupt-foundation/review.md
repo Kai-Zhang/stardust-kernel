@@ -62,7 +62,16 @@ Validation commands and outcomes (refreshed 2026-02-21):
   - Impact: low for M2 foundation goals; important for M3/M4 planning.
   - Suggested follow-up: define explicit controller integration acceptance for next interrupt-focused step.
 
+## Layer D Release Gate Evidence
+
+- Main branch PASS:
+  - URL: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253479921
+  - Commit: `59904cb05fe4777d9a0f96fe96d140679661a851`
+- Release branch PASS (`release/m2-memory-interrupt-foundation`):
+  - URL: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253500342
+  - Commit: `59904cb05fe4777d9a0f96fe96d140679661a851`
+
 ## Recommendation
 
 - **PASS** for M2 foundation scope closure.
-- No blocking issues found for milestone-scoped docs + implementation + Layer A/B/C evidence.
+- No blocking issues found for milestone-scoped docs + implementation + Layer A/B/C/D evidence.
