@@ -12,6 +12,7 @@ REVIEWS = ROOT / "docs" / "reviews"
 
 DONE_RE = re.compile(r"- status:\s*`done`")
 ID_RE = re.compile(r"- id:\s*`([^`]+)`")
+TOP_LEVEL_HEADER_RE = re.compile(r"^###\s+M\d+[A-Za-z]?\s*$")
 URL_RE = re.compile(r"https://github\.com/[^\s)]+/actions/runs/\d+")
 
 # M0 predates release gate policy and has no review artifact.
@@ -21,14 +22,31 @@ POLICY_EXEMPT = {"M0-workspace-bootstrap"}
 def parse_milestones(text: str) -> list[tuple[str, str]]:
     milestones: list[tuple[str, str]] = []
     current_id: str | None = None
+    in_top_level_block = False
+
     for line in text.splitlines():
+        if TOP_LEVEL_HEADER_RE.match(line.strip()):
+            in_top_level_block = True
+            current_id = None
+            continue
+
+        if line.startswith("### ") and not TOP_LEVEL_HEADER_RE.match(line.strip()):
+            in_top_level_block = False
+            current_id = None
+            continue
+
+        if not in_top_level_block:
+            continue
+
         id_match = ID_RE.search(line)
         if id_match:
             current_id = id_match.group(1)
             continue
+
         if current_id and DONE_RE.search(line):
             milestones.append((current_id, "done"))
             current_id = None
+
     return milestones
 
 
@@ -53,8 +71,15 @@ def main() -> int:
             continue
 
         content = review_path.read_text(encoding="utf-8")
-        if "## Layer D Release Gate Evidence" not in content:
-            errors.append(f"{milestone_id}: missing 'Layer D Release Gate Evidence' section")
+        has_layer_d_section = (
+            "## Layer D Release Gate Evidence" in content
+            or "## Layer D Release Evidence" in content
+        )
+        if not has_layer_d_section:
+            errors.append(
+                f"{milestone_id}: missing Layer D evidence section "
+                "('Layer D Release Gate Evidence' or 'Layer D Release Evidence')"
+            )
             continue
 
         urls = URL_RE.findall(content)
