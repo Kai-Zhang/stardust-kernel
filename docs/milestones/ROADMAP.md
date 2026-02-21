@@ -9,6 +9,14 @@ This roadmap is formatted for humans and coding agents. Keep milestone state and
 - `blocked`: waiting on dependency or design decision
 - `done`: acceptance criteria satisfied
 
+## Completion Evidence Standard
+
+A milestone can be marked `done` only when all required evidence is linked in docs/reviews:
+
+- Layer C reviewer baseline evidence
+- Layer D passing run URL on `main`
+- Layer D passing run URL on corresponding `release/*` branch
+
 ## Milestones
 
 ### M0

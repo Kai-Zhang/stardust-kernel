@@ -53,6 +53,26 @@ Note: once `cargo xtask` is implemented, prefer unified task entrypoints over ad
   - must be demo-ready and test-passing
   - should remain stable for teaching/playground use
 
+### Release Gate Policy (Mandatory)
+
+- A milestone cannot be marked complete unless both are available:
+  - Layer C pass evidence (reviewer baseline)
+  - Layer D pass evidence (GitHub Actions run URL)
+- No pass URL, no milestone completion.
+- `release/*` branches are treated as frozen snapshots.
+  - Allowed changes: `fix(release): ...` and `docs(release): ...` only.
+  - Every release branch fix must re-run Layer D and attach the new passing run URL.
+
+### Release Incident Handling (Bad Case Procedure)
+
+When a release gate fails after branch creation:
+
+1. Fix on `main` first.
+2. Verify Layer D pass on `main` and capture run URL.
+3. Cherry-pick minimal fix commit(s) onto the target `release/*` branch.
+4. Re-run Layer D on the release branch and capture run URL.
+5. Update milestone review evidence with both run URLs (`main` + `release`).
+
 ## 5) Commit Policy
 
 - Use clear, readable commit messages.
@@ -78,7 +98,7 @@ Note: once `cargo xtask` is implemented, prefer unified task entrypoints over ad
 A task is done only when all are true:
 
 - PRD and design docs exist and match implementation scope.
-- Teaching theory note exists for the milestone and reflects actual runtime behavior.
+- Fundamental theory note exists for the milestone and reflects actual runtime behavior.
 - Code builds for touched crates.
 - Implementer gate passed: Layer A + Layer B.
 - Reviewer precondition passed: Layer C.
