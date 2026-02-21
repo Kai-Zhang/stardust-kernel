@@ -20,7 +20,7 @@ Validation commands and outcomes:
 - `cargo check --workspace` -> pass (`Finished 'dev' profile ...`)
 - `scripts/build.sh` -> pass
   - `Built EFI image: .../target/m1-boot.img`
-  - `Kernel EFI: .../target/x86_64-unknown-uefi/debug/teaching-kernel.efi`
+  - `Kernel EFI: .../target/x86_64-unknown-uefi/debug/stardust-kernel.efi`
 - `scripts/run-qemu.sh` -> boot log captured in 3 consecutive runs:
   - Run #1: `stardust-kernel 0.1.0`; `memmap: descriptors=102 total_pages=3342240 conventional_pages=118161`
   - Run #2: `stardust-kernel 0.1.0`; `memmap: descriptors=101 total_pages=3342240 conventional_pages=118162`

@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET="x86_64-unknown-uefi"
-EFI_OUT="$ROOT_DIR/target/$TARGET/debug/teaching-kernel.efi"
+EFI_OUT="$ROOT_DIR/target/$TARGET/debug/stardust-kernel.efi"
 IMAGE_DIR="$ROOT_DIR/target/m1-image"
 IMAGE_PATH="$ROOT_DIR/target/m1-boot.img"
 
@@ -14,7 +14,7 @@ command -v mcopy >/dev/null || { echo "mtools (mcopy) not found"; exit 1; }
 
 rustup target add "$TARGET" >/dev/null
 
-cargo build -p teaching-kernel --target "$TARGET"
+cargo build -p stardust-kernel --target "$TARGET"
 
 rm -rf "$IMAGE_DIR"
 mkdir -p "$IMAGE_DIR/EFI/BOOT"

@@ -65,6 +65,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "stardust-kernel"
+version = "0.1.0"
+dependencies = [
+ "uefi",
+]
+
+[[package]]
+name = "stardust-user"
+version = "0.1.0"
+
+[[package]]
 name = "syn"
 version = "1.0.109"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -85,17 +96,6 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
-
-[[package]]
-name = "teaching-kernel"
-version = "0.1.0"
-dependencies = [
- "uefi",
-]
-
-[[package]]
-name = "teaching-user"
-version = "0.1.0"
 
 [[package]]
 name = "ucs2"

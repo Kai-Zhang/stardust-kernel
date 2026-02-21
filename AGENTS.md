@@ -70,6 +70,7 @@ Note: once `cargo xtask` is implemented, prefer unified task entrypoints over ad
 
 - All repository files are written in **English**.
 - Keep milestone docs concise and machine-readable.
+- Each milestone must include a fundamental theory note at `docs/fundamentals/M{N}-{slug}.md`, aligned with PRD/design scope, and indexed in `docs/fundamentals/README.md`.
 - If syscall behavior changes, update `docs/abi/linux-syscall-subset.md` in the same change.
 
 ## 8) Definition of Done (Per Milestone Task)
@@ -77,6 +78,7 @@ Note: once `cargo xtask` is implemented, prefer unified task entrypoints over ad
 A task is done only when all are true:
 
 - PRD and design docs exist and match implementation scope.
+- Teaching theory note exists for the milestone and reflects actual runtime behavior.
 - Code builds for touched crates.
 - Implementer gate passed: Layer A + Layer B.
 - Reviewer precondition passed: Layer C.
