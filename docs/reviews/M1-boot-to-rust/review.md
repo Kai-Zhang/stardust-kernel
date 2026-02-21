@@ -26,6 +26,13 @@ Validation commands and outcomes:
   - Run #2: `stardust-kernel 0.1.0`; `memmap: descriptors=101 total_pages=3342240 conventional_pages=118162`
   - Run #3: `stardust-kernel 0.1.0`; `memmap: descriptors=101 total_pages=3342240 conventional_pages=118162`
 
+## Layer D Release Evidence
+
+- Main branch pass URL:
+  - https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22258067693
+- Release branch pass URL (`release/m1-boot-to-rust`):
+  - https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253141966
+
 ## Checklist Against Acceptance Criteria
 
 1. QEMU boot reaches kernel Rust code reliably (>=3 runs)

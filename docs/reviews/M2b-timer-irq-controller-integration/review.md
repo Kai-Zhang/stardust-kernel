@@ -29,6 +29,13 @@ Captured runtime markers:
 - `m2b:init gdt_ready=true tss_ready=true idt_ready=true`
 - `m2b:timer_ticks hz=100 vector=32 ticks=8 acks=8`
 
+## Layer D Release Evidence
+
+- Main branch pass URL:
+  - https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22258067693
+- Release branch pass URL (`release/m2b-timer-irq-controller-integration`):
+  - https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253983968
+
 ## Checklist Against Acceptance Criteria
 
 1. Layer A checks pass
