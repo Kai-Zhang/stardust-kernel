@@ -116,45 +116,60 @@ A milestone can be marked `done` only when all required evidence is linked in do
 - id: `M5-busybox-l2-foundation`
 - status: `planned`
 - objective: Bridge from current syscall subset to an L2 target capable of running a BusyBox subset in QEMU.
-- deliverables:
-  - Expand Linux syscall subset for minimal userspace/runtime compatibility (`openat`, `close`, `fstat`, `lseek`, `mprotect`, `ioctl` subset as needed)
-  - Introduce minimal VFS + virtio-blk-backed read-only rootfs path for demo workloads
-  - Add reproducible BusyBox subset demo script and compatibility matrix in docs
 - dependencies:
   - `M4-syscalls-b-and-doc-hardening`
-- acceptance:
-  - At least one documented BusyBox subset command group runs in QEMU end-to-end
-  - Syscall compatibility matrix is updated with implemented semantics and known deviations
-  - Layer B/C scripts include the BusyBox subset smoke demo
+- sub-milestones:
+  - `M5-I1-userspace-file-minimal-loop`
+    - objective: first end-to-end file path (`openat`/`read`/`close`/`fstat`) on read-only rootfs
+    - demo: user program reads `/etc/motd` and prints to stdout
+    - acceptance: Layer B smoke script passes 3 consecutive QEMU runs
+  - `M5-I2-busybox-minimal-command-set`
+    - objective: run minimal BusyBox subset commands in QEMU
+    - demo: stable command group (`echo`, `cat`, `ls` subset)
+    - acceptance: compatibility matrix + Layer C reproducible smoke pass
+  - `M5-I3-l2-consolidation-and-release-gate`
+    - objective: close ABI/documentation gaps and reach M5 release quality
+    - demo: one script from boot to BusyBox subset command sequence
+    - acceptance: Layer B/C/D pass + review evidence complete (`main` + `release/*` URLs)
 
 ### M6
 
 - id: `M6-smp-and-simd-foundation`
 - status: `planned`
 - objective: Introduce modern hardware capabilities in a teaching-friendly, switchable way.
-- deliverables:
-  - SMP bootstrap path (`CONFIG_SMP`) with deterministic AP bring-up logs
-  - Basic multicore scheduling/synchronization primitives for demo workloads
-  - SIMD context management baseline (`CONFIG_SIMD`) with documented save/restore behavior
 - dependencies:
   - `M5-busybox-l2-foundation`
-- acceptance:
-  - Kernel boots in both single-core and SMP modes with explicit mode markers
-  - Deterministic multicore smoke test passes in QEMU
-  - SIMD-enabled smoke test passes without regressions in syscall/demo path
+- sub-milestones:
+  - `M6-I1-smp-boot-bringup`
+    - objective: AP bring-up with deterministic markers under `CONFIG_SMP`
+    - demo: boot logs show BSP/AP initialization and online CPU count
+    - acceptance: single-core and SMP boot paths both pass Layer B smoke
+  - `M6-I2-multicore-scheduling-and-sync-baseline`
+    - objective: basic multicore scheduling/synchronization primitives for demo workload
+    - demo: deterministic multicore counter/work-queue scenario
+    - acceptance: no deadlock/race in repeated QEMU smoke runs; documented invariants
+  - `M6-I3-simd-context-baseline`
+    - objective: SIMD save/restore baseline under `CONFIG_SIMD`
+    - demo: user/kernel transition with SIMD workload and integrity checks
+    - acceptance: SIMD smoke passes without regressing syscall/demo path; docs updated
 
 ### M7
 
 - id: `M7-hardware-bringup-and-reproducibility`
 - status: `planned`
 - objective: Move from QEMU-only validation to reproducible real-hardware bring-up.
-- deliverables:
-  - Target hardware profile and bring-up checklist (firmware settings, boot media, rollback path)
-  - Real-hardware boot and syscall smoke scripts aligned with QEMU validation baseline
-  - Documentation for troubleshooting hardware-specific failures and diffing against QEMU behavior
 - dependencies:
   - `M6-smp-and-simd-foundation`
-- acceptance:
-  - Same milestone demo scenario passes on QEMU and on at least one real machine profile
-  - Layer C evidence includes hardware run logs and reproducible setup notes
-  - Layer D evidence links include both `main` and corresponding `release/*` validation runs
+- sub-milestones:
+  - `M7-I1-target-hardware-profile-and-boot-checklist`
+    - objective: lock target machine profile + reproducible bring-up checklist
+    - demo: documented cold-boot checklist from firmware to kernel markers
+    - acceptance: checklist reproducible by reviewer on same hardware profile
+  - `M7-I2-hardware-smoke-and-parity`
+    - objective: align real-hardware smoke with QEMU baseline behavior
+    - demo: same command/script path runs on QEMU and real machine
+    - acceptance: parity report with known deltas + hardware run logs in Layer C evidence
+  - `M7-I3-release-hardening-and-teaching-packaging`
+    - objective: package stable teaching release with hardware troubleshooting guidance
+    - demo: release script + troubleshooting doc walk-through
+    - acceptance: Layer D + review evidence complete on `main` and `release/*`
