@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "language": "en",
+  "multiAgent": {
+    "enabled": true,
+    "defaultWorkflow": "workflows/milestone-orchestration.md",
+    "roles": [
+      {
+        "id": "planner-pm",
+        "promptFile": "roles/planner-pm.md",
+        "outputs": ["docs/specs/<milestone-id>/prd.md"]
+      },
+      {
+        "id": "architect",
+        "promptFile": "roles/architect.md",
+        "outputs": ["docs/specs/<milestone-id>/design.md"]
+      },
+      {
+        "id": "implementer",
+        "promptFile": "roles/implementer.md",
+        "outputs": ["code-diff", "tests"]
+      },
+      {
+        "id": "reviewer",
+        "promptFile": "roles/reviewer.md",
+        "outputs": ["docs/reviews/<milestone-id>/review.md"]
+      }
+    ]
+  },
+  "policies": {
+    "requireEnglishDocs": true,
+    "requireReadableCommits": true,
+    "requireMilestoneReleaseBranch": true
+  }
+}

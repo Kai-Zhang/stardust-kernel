@@ -1,0 +1,66 @@
+# Rust
+/target/
+**/target/
+**/*.rs.bk
+
+# Keep Cargo.lock for reproducible top-level builds; ignore nested workspace locks
+**/Cargo.lock
+!/Cargo.lock
+
+# Tooling caches
+/.cargo-home/
+/.rustup/
+
+# Kernel / OSDev build artifacts
+/build/
+/dist/
+/out/
+/esp/
+/mnt/
+/tmp/
+*.bin
+*.elf
+*.map
+*.o
+*.a
+*.lst
+*.sym
+
+# UEFI / firmware / disk images
+*.efi
+*.img
+*.iso
+*.qcow2
+*.vdi
+*.vmdk
+*.fd
+OVMF*.fd
+
+# Emulator logs and traces
+qemu.log
+qemu-*.log
+serial.log
+bochsout.txt
+*.trace
+
+# Coverage and profiling
+*.profraw
+*.profdata
+*.gcda
+*.gcno
+*.lcov
+coverage/
+
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Python helpers (if used in scripts/tools)
+__pycache__/
+*.pyc
+.venv/
