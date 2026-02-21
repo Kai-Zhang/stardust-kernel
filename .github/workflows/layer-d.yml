@@ -47,8 +47,8 @@ jobs:
             python3 \
             make
 
-      - name: Install pinned Rust nightly + components
-        uses: dtolnay/rust-toolchain@nightly-2026-02-12
+      - name: Install stable Rust + components
+        uses: dtolnay/rust-toolchain@stable
         with:
           components: rust-src,llvm-tools,rustfmt,clippy
 
