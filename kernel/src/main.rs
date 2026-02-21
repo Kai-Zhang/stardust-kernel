@@ -83,5 +83,16 @@ fn efi_main() -> Status {
         user_report.exit_code
     );
 
+    let abi_report = userspace::run_m4_abi_smoke();
+    println!(
+        "m4:abi read_ok={} brk_ok={} mmap_ok={} munmap_ok={} uname_ok={} getpid_ok={}",
+        abi_report.read_ok,
+        abi_report.brk_ok,
+        abi_report.mmap_ok,
+        abi_report.munmap_ok,
+        abi_report.uname_ok,
+        abi_report.getpid_ok
+    );
+
     Status::SUCCESS
 }
