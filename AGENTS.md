@@ -27,7 +27,23 @@ For any non-trivial milestone task, run four roles:
 
 The orchestrator (human or coordinator agent) must keep status visible and unblock decisions quickly.
 
-## 3) Branching & Release Policy
+## 3) Testing Layers (Required Quality Model)
+
+Use the same layer model for local work, review handoff, and milestone release:
+
+- **Layer A (Fast Local Correctness)**: quick local checks on touched crates and docs.
+- **Layer B (Local Integration/Demo Smoke)**: local integration or demo scripts proving the milestone behavior.
+- **Layer C (Reviewer Baseline Verification)**: full reviewer baseline run in the defined milestone environment.
+- **Layer D (Release Validation)**: release-grade validation for milestone branch readiness.
+  - Layer D may run via GitHub Actions on Linux x86_64 (for example, through `workflow_dispatch`).
+
+Required gates:
+
+- Implementer done gate: **Layer A + Layer B pass**.
+- Reviewer precondition: **Layer C pass**.
+- Milestone release gate: **Layer C + Layer D pass**.
+
+## 4) Branching & Release Policy
 
 - `main`: ongoing development and integration.
 - After each milestone is accepted, create a **milestone release branch**:
@@ -35,31 +51,33 @@ The orchestrator (human or coordinator agent) must keep status visible and unblo
   - must be demo-ready and test-passing
   - should remain stable for teaching/playground use
 
-## 4) Commit Policy
+## 5) Commit Policy
 
 - Use clear, readable commit messages.
 - Architect-defined implementation steps should land as separate commits when feasible (one step, one commit).
 - Prefer Conventional Commit prefixes: `feat:`, `fix:`, `docs:`, `test:`, `chore:`.
 
-## 5) Code Quality Rules
+## 6) Code Quality Rules
 
 - Prioritize readability and explicit control flow.
 - Avoid meaningless utility layers and premature abstractions.
 - Duplicate a small amount of code if it keeps concepts easier to teach.
 - Refactor only when repeated patterns are proven and stable.
 
-## 6) Documentation Rules
+## 7) Documentation Rules
 
 - All repository files are written in **English**.
 - Keep milestone docs concise and machine-readable.
 - If syscall behavior changes, update `docs/abi/linux-syscall-subset.md` in the same change.
 
-## 7) Definition of Done (Per Milestone Task)
+## 8) Definition of Done (Per Milestone Task)
 
 A task is done only when all are true:
 
 - PRD and design docs exist and match implementation scope.
 - Code builds for touched crates.
-- Tests and demo scripts pass in the defined environment.
+- Implementer gate passed: Layer A + Layer B.
+- Reviewer precondition passed: Layer C.
+- Milestone release gate passed: Layer C + Layer D.
 - Reviewer checklist is completed with unresolved issues explicitly tracked.
 - Commit history is clear enough for teaching walkthrough.
