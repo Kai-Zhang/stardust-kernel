@@ -41,7 +41,12 @@ Captured runtime markers:
 - M3 ring transition is intentionally a teaching model, not hardware `syscall/sysret` implementation.
 - This constraint is documented in PRD/design/fundamentals and does not block milestone Phase A goals.
 
+## Layer D Release Gate Evidence
+
+- Main branch PASS: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22254292571
+- Release branch PASS (`release/m3-userspace-and-syscalls-a`): https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22254311214
+
 ## Recommendation
 
 - **Final PASS** for M3 Phase A scope: ring transition model, syscall subset (`write`, `exit`, `exit_group`), and demo payload path.
-- No blocker found for release gate preparation.
+- Release gate complete with both required Layer D PASS URLs.
