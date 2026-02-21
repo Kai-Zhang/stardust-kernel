@@ -51,7 +51,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
 ### M2
 
 - id: `M2-memory-interrupt-foundation`
-- status: `planned`
+- status: `done` (Foundation PASS)
 - objective: Introduce memory management and minimal interrupt handling.
 - deliverables:
   - Physical frame allocator
