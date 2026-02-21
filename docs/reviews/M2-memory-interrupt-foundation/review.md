@@ -17,11 +17,11 @@ Environment preflight:
 - `cargo --version` -> `cargo 1.95.0-nightly (ce69df6f7 2026-02-12)`
 - `qemu-system-x86_64 --version | head -n 1` -> `QEMU emulator version 10.2.1`
 
-Validation commands and outcomes:
+Validation commands and outcomes (refreshed 2026-02-21):
 
+- `cargo fmt --check` -> pass
 - `cargo check --workspace` -> pass
 - `cargo clippy --workspace --all-targets -- -D warnings` -> pass
-- `cargo test -p stardust-kernel --lib` -> pass (`3 passed`)
 - `scripts/build.sh` -> pass, EFI image generated
 - QEMU smoke run (8s wrapper) -> pass with visible markers:
   - `stardust-kernel 0.1.0`
