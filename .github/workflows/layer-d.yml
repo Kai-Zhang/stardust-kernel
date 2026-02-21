@@ -1,0 +1,106 @@
+name: Layer D Release Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      milestone:
+        description: "Milestone identifier (e.g. M1-boot-to-rust)"
+        required: false
+        type: string
+      ref:
+        description: "Git ref to validate (branch/tag/SHA). Leave empty to use current ref"
+        required: false
+        type: string
+  push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+      - 'release/**'
+
+concurrency:
+  group: layer-d-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  layer-d:
+    name: Layer D (Linux x86_64)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      - name: Install system dependencies
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            qemu-system-x86 \
+            ovmf \
+            python3 \
+            make
+
+      - name: Install Rust nightly + components
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rust-src,llvm-tools,rustfmt,clippy
+
+      - name: Cache cargo registry + target
+        uses: Swatinem/rust-cache@v2
+
+      - name: Layer A checks
+        run: |
+          set -eux
+          cargo fmt --all -- --check
+          cargo clippy --workspace --all-targets -- -D warnings
+          cargo check --workspace
+
+      - name: Layer B checks (if script exists)
+        run: |
+          set -eux
+          if [ -x scripts/test-layer-b.sh ]; then
+            scripts/test-layer-b.sh
+          elif [ -f scripts/test-layer-b.sh ]; then
+            bash scripts/test-layer-b.sh
+          else
+            echo "No scripts/test-layer-b.sh found; skipping Layer B script."
+          fi
+
+      - name: Layer C checks in QEMU (if script exists)
+        run: |
+          set -eux
+          if [ -x scripts/test-layer-c.sh ]; then
+            scripts/test-layer-c.sh
+          elif [ -f scripts/test-layer-c.sh ]; then
+            bash scripts/test-layer-c.sh
+          else
+            echo "No scripts/test-layer-c.sh found; skipping Layer C script."
+          fi
+
+      - name: Layer D release checks (if script exists)
+        run: |
+          set -eux
+          if [ -x scripts/test-layer-d.sh ]; then
+            scripts/test-layer-d.sh
+          elif [ -f scripts/test-layer-d.sh ]; then
+            bash scripts/test-layer-d.sh
+          else
+            echo "No scripts/test-layer-d.sh found; using baseline Layer D criteria from A+B+C."
+          fi
+
+      - name: Upload logs/artifacts if present
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-d-artifacts-${{ github.run_number }}
+          if-no-files-found: ignore
+          path: |
+            artifacts/**
+            logs/**
+            **/*.log

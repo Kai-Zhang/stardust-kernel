@@ -59,6 +59,19 @@ This document defines the A/B/C/D test layers used by the multi-agent workflow.
 - Reviewer precondition: **Layer C pass**.
 - Milestone release gate: **Layer C + Layer D pass**.
 
+## Planned `cargo xtask` Mapping
+
+The repository will expose unified task entrypoints through `cargo xtask` once implemented.
+
+- Layer A: `cargo xtask layer-a`
+- Layer B: `cargo xtask layer-b`
+- Layer C: `cargo xtask layer-c`
+- Layer D: `cargo xtask layer-d`
+- QEMU demo flow: `cargo xtask qemu-run`
+- QEMU deterministic smoke flow: `cargo xtask qemu-smoke`
+
+Command contracts, exit codes, and CI mapping are defined in `docs/testing/xtask-plan.md`.
+
 ## Recommended Cadence (macOS-First)
 
 - **Per commit**: Layer A.

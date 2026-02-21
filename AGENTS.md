@@ -43,6 +43,8 @@ Required gates:
 - Reviewer precondition: **Layer C pass**.
 - Milestone release gate: **Layer C + Layer D pass**.
 
+Note: once `cargo xtask` is implemented, prefer unified task entrypoints over ad-hoc per-layer shell invocations.
+
 ## 4) Branching & Release Policy
 
 - `main`: ongoing development and integration.
