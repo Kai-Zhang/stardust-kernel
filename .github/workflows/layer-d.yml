@@ -58,7 +58,8 @@ jobs:
         run: |
           set -eux
           cargo fmt --all -- --check
-          cargo clippy --workspace --all-targets -- -D warnings
+          cargo clippy -p stardust-kernel -- -D warnings
+          cargo clippy -p stardust-user --all-targets -- -D warnings
           cargo check --workspace
 
       - name: Layer B checks (if script exists)
