@@ -52,7 +52,13 @@ Captured runtime markers:
   - `[[bin]] bench = false`
 - This keeps milestone scope intact and avoids non-M2b architecture expansion.
 
+## Layer D Gate Evidence
+
+- `main` PASS: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253955423
+- `release/m2b-timer-irq-controller-integration` PASS: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22253968692
+
 ## Recommendation
 
 - **Final PASS** for M2b scope (timer setup/frequency control, IRQ routing/ack path, observable periodic tick behavior).
-- No blocking issues for milestone handoff at Layer C level.
+- Layer D gate evidence is complete on both `main` and `release/*` branch.
+- No blocking issues for milestone handoff.

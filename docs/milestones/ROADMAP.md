@@ -66,7 +66,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
 ### M2b
 
 - id: `M2b-timer-irq-controller-integration`
-- status: `active`
+- status: `done`
 - objective: Complete hardware-level periodic timer IRQ controller integration on top of M2 foundations.
 - deliverables:
   - Programmable timer source setup and frequency control
