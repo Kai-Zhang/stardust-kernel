@@ -99,7 +99,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
 ### M4
 
 - id: `M4-syscalls-b-and-doc-hardening`
-- status: `active`
+- status: `done` (Final PASS)
 - objective: Implement syscall subset Phase B/C and tighten documentation/testing loop.
 - deliverables:
   - Syscalls from Phase B/C in ABI document

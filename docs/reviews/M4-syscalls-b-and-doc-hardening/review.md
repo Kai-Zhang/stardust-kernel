@@ -48,10 +48,10 @@ Captured runtime markers:
 
 ## Layer D Release Gate Evidence
 
-- Main branch PASS: **BLOCKED (requires CI run URL)**
-- Release branch PASS (`release/m4-syscalls-b-and-doc-hardening`): **BLOCKED (requires CI run URL)**
+- Main branch PASS: https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22254894790 (commit `26942da`)
+- Release branch PASS (`release/m4-syscalls-b-and-doc-hardening`): https://github.com/Kai-Zhang/stardust-kernel/actions/runs/22254913298 (commit `26942da`)
 
 ## Recommendation
 
-- **Local Final PASS (Layers A/B/C)** for M4 scoped implementation.
-- **Milestone completion blocked** until Layer D pass URLs are attached per release gate policy.
+- **Final PASS (Layers A/B/C/D)** for M4 scoped implementation.
+- Milestone release gate evidence is complete on both `main` and `release/m4-syscalls-b-and-doc-hardening`.
