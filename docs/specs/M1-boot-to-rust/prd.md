@@ -1,7 +1,7 @@
 # M1 PRD — Boot to Rust
 
 - Milestone: `M1-boot-to-rust`
-- Status: Draft
+- Status: Final (reviewed 2026-02-21)
 - Owner: Orchestrator + Codex roles
 
 ## Problem Statement

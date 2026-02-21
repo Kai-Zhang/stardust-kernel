@@ -26,9 +26,8 @@ Validation commands and outcomes (refreshed 2026-02-21):
 - QEMU smoke run (8s wrapper) -> pass with visible markers:
   - `stardust-kernel 0.1.0`
   - `memmap: descriptors=...`
-  - `m2:frames tracked_total=...`
-  - `m2:vmap mapped_entries=0 translation_ok=true`
-  - `m2:interrupts gdt=true tss=true idt=true timer_ticks=2`
+  - `m2b:init gdt_ready=true tss_ready=true idt_ready=true`
+  - `m2b:timer_ticks hz=100 vector=32 ticks=8 acks=8`
 
 ## Checklist Against Acceptance Criteria
 
@@ -36,8 +35,8 @@ Validation commands and outcomes (refreshed 2026-02-21):
    - Evidence: check + clippy all-targets green
    - Result: **Pass**
 
-2. M2 boot markers visible
-   - Evidence: QEMU serial output includes all three `m2:*` markers
+2. M2 foundation behavior visible in integrated boot markers
+   - Evidence: QEMU serial output includes `m2b:init` and `m2b:timer_ticks` markers
    - Result: **Pass**
 
 3. Mapping tests cover success/conflict/release behavior

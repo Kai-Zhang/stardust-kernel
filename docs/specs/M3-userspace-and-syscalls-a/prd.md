@@ -1,7 +1,7 @@
 # M3 PRD — Userspace + Syscalls Phase A
 
 - Milestone: `M3-userspace-and-syscalls-a`
-- Status: Draft
+- Status: Final (reviewed 2026-02-21)
 - Owner: Orchestrator + Codex roles
 - Depends on: `M2-memory-interrupt-foundation`, `M2b-timer-irq-controller-integration`
 
@@ -41,7 +41,7 @@ Minimal demoable result:
 
 - FR-1: Userspace runtime starts in ring0 model, enters ring3 model, and returns to ring0 after exit.
 - FR-2: `write` supports only `fd=1` and `fd=2`; other fds return `-EBADF`.
-- FR-3: Invalid write buffer length (`len==0`) returns `-EFAULT`.
+- FR-3: Invalid write buffer pointer (`buf==NULL`) returns `-EFAULT`.
 - FR-4: `exit` and `exit_group` both terminate the single-task runtime in Phase A.
 - FR-5: Unknown syscall numbers return `-ENOSYS`.
 

@@ -18,7 +18,8 @@ const LINUX_ENOSYS: isize = 38;
 const MMAP_ANON_FLAG: u64 = 0x20;
 const MMAP_PRIVATE_FLAG: u64 = 0x02;
 const MMAP_BASE: u64 = 0x4000_0000;
-const MMAP_STRIDE: u64 = 0x10_000;
+const MMAP_PAGE_SIZE: u64 = 0x1000;
+const MMAP_GUARD_GAP: u64 = 0x1000;
 const MMAP_SLOTS: usize = 8;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -93,10 +94,18 @@ impl KernelState {
     }
 
     fn alloc_mapping(&mut self, len: u64) -> Option<u64> {
+        let aligned_len = len
+            .checked_add(MMAP_PAGE_SIZE - 1)?
+            .checked_div(MMAP_PAGE_SIZE)?
+            .checked_mul(MMAP_PAGE_SIZE)?;
+
         for slot in &mut self.mappings {
             if slot.is_none() {
                 let addr = self.next_mmap;
-                self.next_mmap = self.next_mmap.saturating_add(MMAP_STRIDE);
+                self.next_mmap = self
+                    .next_mmap
+                    .checked_add(aligned_len)?
+                    .checked_add(MMAP_GUARD_GAP)?;
                 *slot = Some(Mapping { start: addr, len });
                 return Some(addr);
             }
@@ -389,6 +398,68 @@ mod tests {
         assert!(mapped.value > 0);
         let unmapped = syscall_dispatch(SYS_MUNMAP, mapped.value as u64, 0x2000, 0, 0, &mut state);
         assert_eq!(unmapped.value, 0);
+    }
+
+    #[test]
+    fn mmap_allocations_do_not_overlap_for_large_lengths() {
+        let mut state = KernelState::new();
+        let first_len = 0x20_000u64;
+        let second_len = 0x3_000u64;
+
+        let first = syscall_dispatch(
+            SYS_MMAP,
+            0,
+            0,
+            first_len,
+            MMAP_ANON_FLAG | MMAP_PRIVATE_FLAG,
+            &mut state,
+        )
+        .value as u64;
+        let second = syscall_dispatch(
+            SYS_MMAP,
+            0,
+            0,
+            second_len,
+            MMAP_ANON_FLAG | MMAP_PRIVATE_FLAG,
+            &mut state,
+        )
+        .value as u64;
+
+        assert!(first > 0 && second > 0);
+        assert!(second >= first + first_len + MMAP_GUARD_GAP);
+    }
+
+    #[test]
+    fn mmap_exhaustion_and_monotonicity_are_stable() {
+        let mut state = KernelState::new();
+        let mut addrs = [0u64; MMAP_SLOTS];
+
+        for addr in &mut addrs {
+            let mapped = syscall_dispatch(
+                SYS_MMAP,
+                0,
+                0,
+                0x1800,
+                MMAP_ANON_FLAG | MMAP_PRIVATE_FLAG,
+                &mut state,
+            );
+            assert!(mapped.value > 0);
+            *addr = mapped.value as u64;
+        }
+
+        for window in addrs.windows(2) {
+            assert!(window[1] > window[0]);
+        }
+
+        let exhausted = syscall_dispatch(
+            SYS_MMAP,
+            0,
+            0,
+            0x1000,
+            MMAP_ANON_FLAG | MMAP_PRIVATE_FLAG,
+            &mut state,
+        );
+        assert_eq!(exhausted.value, -22);
     }
 
     #[test]

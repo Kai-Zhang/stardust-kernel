@@ -74,7 +74,7 @@ If M4 marker causes boot instability:
 
 ## 6. Compatibility
 
-- Preserves M1/M2/M2b/M3 markers.
+- Preserves M1/M2b/M3 markers (legacy `m2:*` markers are deprecated in favor of `m2b:*`).
 - Keeps Phase A syscall behavior unchanged.
 - Aligns docs and runtime behavior in `docs/abi/linux-syscall-subset.md`.
 

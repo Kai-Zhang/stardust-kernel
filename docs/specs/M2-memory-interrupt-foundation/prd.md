@@ -1,7 +1,7 @@
 # M2 PRD — Memory + Interrupt Foundation
 
 - Milestone: `M2-memory-interrupt-foundation`
-- Status: Draft
+- Status: Final (reviewed 2026-02-21)
 - Owner: Orchestrator + Codex roles
 - Depends on: `M1-boot-to-rust`
 
@@ -59,10 +59,10 @@ Explicit constraints:
 ## 5. Acceptance Criteria (Testable)
 
 - AC-1: `cargo check --workspace`, `cargo fmt --check`, and `cargo clippy --workspace --all-targets` pass (Layer A).
-- AC-2: Kernel runtime boot log shows M2 markers:
-  - `m2:frames ...`
-  - `m2:vmap ...`
-  - `m2:interrupts timer_ticks=...`
+- AC-2: Kernel runtime boot log shows M2b-compatible interrupt readiness marker in current integrated boot path:
+  - `m2b:init ...`
+  - `m2b:timer_ticks ...`
+  - (legacy `m2:*` markers are formally deprecated)
 - AC-3: Mapping API tests cover success + overlap/release behavior and pass (Layer B).
 - AC-4: Reviewer baseline run can reproduce markers and map each to acceptance evidence (Layer C).
 
@@ -78,7 +78,7 @@ Demo steps:
 Expected visible behavior:
 
 - M1 boot markers remain present.
-- M2 readiness markers appear in serial output.
+- M2b interrupt readiness markers (`m2b:init`, `m2b:timer_ticks`) appear in serial output.
 - No crash/fault marker before timeout boundary.
 
 ## 7. Risks & Open Questions

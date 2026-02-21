@@ -42,6 +42,7 @@ qemu-*.log
 serial.log
 bochsout.txt
 *.trace
+logs/
 
 # Coverage and profiling
 *.profraw

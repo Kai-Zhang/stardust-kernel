@@ -1,7 +1,7 @@
 # M4 PRD — Syscalls Phase B/C and Documentation Hardening
 
 - Milestone: `M4-syscalls-b-and-doc-hardening`
-- Status: Draft
+- Status: Final (reviewed 2026-02-21)
 - Owner: Orchestrator + Codex roles
 - Depends on: `M3-userspace-and-syscalls-a`
 

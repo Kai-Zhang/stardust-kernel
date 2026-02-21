@@ -36,7 +36,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
 ### M1
 
 - id: `M1-boot-to-rust`
-- status: `done` (Final PASS)
+- status: `blocked` (Layer D evidence backfill required)
 - objective: Boot Rust kernel under QEMU via UEFI and print early boot diagnostics.
 - deliverables:
   - UEFI boot path and handoff structures
@@ -51,7 +51,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
 ### M2
 
 - id: `M2-memory-interrupt-foundation`
-- status: `done` (Final PASS)
+- status: `blocked` (Layer D evidence backfill required)
 - objective: Introduce memory management and minimal interrupt handling.
 - deliverables:
   - Physical frame allocator
@@ -66,7 +66,7 @@ A milestone can be marked `done` only when all required evidence is linked in do
 ### M2b
 
 - id: `M2b-timer-irq-controller-integration`
-- status: `done` (Final PASS)
+- status: `blocked` (Layer D evidence backfill required)
 - objective: Complete hardware-level periodic timer IRQ controller integration on top of M2 foundations.
 - deliverables:
   - Programmable timer source setup and frequency control
